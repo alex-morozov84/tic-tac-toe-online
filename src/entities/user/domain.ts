@@ -1,0 +1,14 @@
+import { UserId } from '@/kernel/ids'
+
+export type UserEntity = {
+  id: UserId
+  login: string
+  rating: number
+  passwordHash: string
+  salt: string
+}
+
+export type SessionEntity = {
+  is: UserId
+  login: string
+}
