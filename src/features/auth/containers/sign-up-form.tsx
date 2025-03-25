@@ -5,22 +5,21 @@ import { AuthFields } from '../ui/fields'
 import { SubmitButton } from '../ui/submit-button'
 
 import { BottomLink } from '../ui/link'
-import { ErrorMessage } from '../ui/submit-button.copy'
+import { ErrorMessage } from '../ui/error-message'
 import { useActionState } from '@/shared/lib/react'
-import { right } from '@/shared/lib/either'
-import { signUpAction } from '../actions/sign-up'
+import { signUpAction, SignUpFormState } from '../actions/sign-up'
 
 export function SignUpForm() {
-  const [formState, action, isPending] = useActionState(signUpAction, right(undefined))
+  const [formState, action, isPending] = useActionState(signUpAction, {} as SignUpFormState)
 
   return (
     <AuthFormLayout
       title="Sign Up"
       description="Create your account to get started"
       action={action}
-      fields={<AuthFields />}
+      fields={<AuthFields formData={formState.formData} errors={formState.errors} />}
       actions={<SubmitButton isPending={isPending}>Sign Up</SubmitButton>}
-      error={<ErrorMessage error={formState} />}
+      error={<ErrorMessage error={formState.errors?._errors} />}
       link={<BottomLink text="Already have an account?" linkText="Sign in" url="/sign-in" />}
     />
   )

@@ -1,5 +1,6 @@
 import { UserEntity } from '@/entities/user/domain'
 import { prisma } from '@/shared/lib/db'
+import { Prisma } from '@prisma/client'
 
 export function saveUser(user: UserEntity): Promise<UserEntity> {
   return prisma.user.upsert({
@@ -11,4 +12,8 @@ export function saveUser(user: UserEntity): Promise<UserEntity> {
   })
 }
 
-export const userRepository = {}
+export function getUser(where: Prisma.UserWhereInput) {
+  return prisma.user.findFirst({ where })
+}
+
+export const userRepository = { saveUser, getUser }

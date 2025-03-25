@@ -4,14 +4,11 @@ import { AuthFormLayout } from '../ui/auth-form-layout'
 import { AuthFields } from '../ui/fields'
 import { SubmitButton } from '../ui/submit-button'
 import { BottomLink } from '../ui/link'
-import { ErrorMessage } from '../ui/submit-button.copy'
-// import { signInAction, SignInFormState } from '../actions/sing-in'
+import { ErrorMessage } from '../ui/error-message'
 import { useActionState } from '@/shared/lib/react'
-
-interface SignInFormState {}
+import { signInAction, SignInFormState } from '@/features/auth/actions/sign-in'
 
 export function SignInForm() {
-  const signInAction = () => {}
   const [formState, action, isPending] = useActionState(signInAction, {} as SignInFormState)
 
   return (
@@ -19,7 +16,7 @@ export function SignInForm() {
       title="Sign In"
       description="Welcome back! Please sign in to your account"
       action={action}
-      fields={<AuthFields {...formState} />}
+      fields={<AuthFields formData={formState.formData} errors={formState.errors} />}
       actions={<SubmitButton isPending={isPending}> Sign In</SubmitButton>}
       error={<ErrorMessage error={formState.errors?._errors} />}
       link={<BottomLink text="Don't have an account?" linkText="Sign up" url="/sign-up" />}
