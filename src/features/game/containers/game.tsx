@@ -27,7 +27,7 @@ export function Game({ gameId }: { gameId: GameId }) {
     ],
     // field: Array(9).fill(null),
     field: [null, null, null, 'X', 'O', null, null, null, null],
-    status: 'inProgress',
+    status: 'gameOverDraw',
   }
   return (
     <GameLayout
