@@ -6,19 +6,10 @@ import { GamePlayers } from '../ui/players'
 import { GameDomain } from '@/entities/game'
 import { GameStatus } from '../ui/status'
 import { GameField } from '../ui/field'
-import { useEffect, useState } from 'react'
+import { useEventSource } from '@/shared/lib/sse/client'
 
 export function Game({ gameId }: { gameId: GameId }) {
-  const [data, setData] = useState<any>()
-
-  useEffect(() => {
-    const gameEvents = new EventSource(`/game/${gameId}/stream`)
-
-    gameEvents.addEventListener('message', (message) => {
-      console.log(message.data)
-      setData(message.data)
-    })
-  }, [gameId])
+  const { dataStream, error } = useEventSource(`/game/${gameId}/stream`, 1)
 
   const game: GameDomain.GameEntity = {
     id: '1',
@@ -44,7 +35,11 @@ export function Game({ gameId }: { gameId: GameId }) {
     status: 'gameOverDraw',
   }
 
-  return <div>{JSON.stringify(data)}</div>
+  return <div>{JSON.stringify(dataStream)}</div>
+
+  {
+    error ? `Ошибка ${JSON.stringify(error)}` : ''
+  }
 
   return (
     <GameLayout

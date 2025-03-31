@@ -1,26 +1,16 @@
 import { NextRequest } from 'next/server'
+import { sseStream } from '@/shared/lib/sse/server'
 
 export function getGameStream(req: NextRequest) {
-  console.log('test')
-  const responseStream = new TransformStream()
-  const writer = responseStream.writable.getWriter()
-  const encoder = new TextEncoder()
+  const { response, handleClose, write } = sseStream(req)
 
   let counter = 1
-
   const interval = setInterval(() => {
-    writer.write(encoder.encode(`data: ${counter++}\n\n`))
+    write(counter++)
   }, 1000)
-
-  req.signal.addEventListener('abort', () => {
+  handleClose(() => {
     clearInterval(interval)
   })
 
-  return new Response(responseStream.readable, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      Connection: 'keep-alive',
-      'Cache-Control': 'no-cache, no-transform',
-    },
-  })
+  return response
 }
