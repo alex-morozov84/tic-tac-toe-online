@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f4dfb4-7cbd-4429-aff1-2bd778d187b8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/shared/lib/sse/client.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared/lib/sse/server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/game/containers/game.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/game/containers/game.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/game/containers/get-game-stream.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/game/containers/get-game-stream.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +46,7 @@
     "nodejs_package_manager_path": "/Users/alex/.nvm/versions/node/v22.12.0/bin/npm",
     "prettierjs.PrettierConfiguration.Package": "\\\\wsl.localhost\\Ubuntu\\home\\alex\\projects\\tic-tac-toe-online\\node_modules\\prettier",
     "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "\\\\wsl.localhost\\Ubuntu\\home\\alex\\projects\\tic-tac-toe-online\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "/Users/alex/Projects/tic-tac-toe-online/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

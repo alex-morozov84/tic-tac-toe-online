@@ -9,7 +9,7 @@ export const sseStream = (req: NextRequest) => {
     return writer.write(encoder.encode(`data: ${JSON.stringify(data)}\n\n`))
   }
 
-  const handleClose = (onDisconnect: () => void) =>
+  const addCloseListener = (onDisconnect: () => void) =>
     void req.signal.addEventListener('abort', () => {
       onDisconnect()
     })
@@ -30,6 +30,6 @@ export const sseStream = (req: NextRequest) => {
     response,
     write,
     close,
-    handleClose,
+    addCloseListener,
   }
 }

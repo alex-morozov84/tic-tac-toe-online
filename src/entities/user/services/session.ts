@@ -4,6 +4,7 @@ import { SessionEntity, UserEntity, userToSession } from '@/entities/user/domain
 import { left, right } from '@/shared/lib/either'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { routes } from '@/kernel/routes'
 
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
@@ -51,13 +52,13 @@ async function deleteSession() {
   cookieStore.delete('session')
 }
 
-async function verifySession() {
-  const cookieStore = await cookies()
-  const sessionCookie = cookieStore.get('session')?.value
-  const session = await decrypt(sessionCookie)
+const getSessionCookies = () => cookies().then((c) => c.get('session')?.value)
+const verifySession = async (getCookies = getSessionCookies) => {
+  const cookie = await getCookies()
+  const session = await decrypt(cookie)
 
   if (session.type === 'left') {
-    redirect('/sign-in')
+    redirect(routes.signIn())
   }
 
   return { isAuth: true, session: session.value }

@@ -7,6 +7,7 @@ import { BottomLink } from '../ui/link'
 import { ErrorMessage } from '../ui/error-message'
 import { useActionState } from '@/shared/lib/react'
 import { signInAction, SignInFormState } from '@/features/auth/actions/sign-in'
+import { routes } from '@/kernel/routes'
 
 export function SignInForm() {
   const [formState, action, isPending] = useActionState(signInAction, {} as SignInFormState)
@@ -19,7 +20,7 @@ export function SignInForm() {
       fields={<AuthFields formData={formState.formData} errors={formState.errors} />}
       actions={<SubmitButton isPending={isPending}> Sign In</SubmitButton>}
       error={<ErrorMessage error={formState.errors?._errors} />}
-      link={<BottomLink text="Don't have an account?" linkText="Sign up" url="/sign-up" />}
+      link={<BottomLink text="Don't have an account?" linkText="Sign up" url={routes.signUp()} />}
     />
   )
 }

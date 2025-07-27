@@ -1,51 +1,29 @@
-'use client'
-
+import { getCurrentUser } from '@/entities/user/server'
 import { GameId } from '@/kernel/ids'
-import { GameLayout } from '../ui/layout'
-import { GamePlayers } from '../ui/players'
-import { GameDomain } from '@/entities/game'
-import { GameStatus } from '../ui/status'
-import { GameField } from '../ui/field'
-import { useEventSource } from '@/shared/lib/sse/client'
+import { GameClient } from './game-client'
+import { startGame } from '@/entities/game/server'
+import { gameEvents } from '../services/game-events'
+import { getGameById } from '@/entities/game/server'
+import { redirect } from 'next/navigation'
 
-export function Game({ gameId }: { gameId: GameId }) {
-  const { dataStream, error } = useEventSource(`/game/${gameId}/stream`, 1)
+export async function Game({ gameId }: { gameId: GameId }) {
+  const user = await getCurrentUser()
 
-  const game: GameDomain.GameEntity = {
-    id: '1',
-    // creator: {
-    //   id: '1',
-    //   login: 'Test',
-    //   rating: 1000,
-    // },
-    players: [
-      {
-        id: '1',
-        login: 'Test',
-        rating: 1000,
-      },
-      {
-        id: '1',
-        login: 'Test',
-        rating: 1000,
-      },
-    ],
-    // field: Array(9).fill(null),
-    field: [null, null, null, 'X', 'O', null, null, null, null],
-    status: 'gameOverDraw',
+  let game = await getGameById(gameId)
+
+  if (!game) {
+    redirect('/')
   }
 
-  return <div>{JSON.stringify(dataStream)}</div>
+  if (user) {
+    const startGameResult = await startGame(gameId, user)
+    console.log('start', startGameResult)
 
-  {
-    error ? `Ошибка ${JSON.stringify(error)}` : ''
+    if (startGameResult.type === 'right') {
+      game = startGameResult.value
+      gameEvents.emit(startGameResult.value)
+    }
   }
 
-  return (
-    <GameLayout
-      players={<GamePlayers game={game} />}
-      status={<GameStatus game={game} />}
-      field={<GameField game={game} />}
-    />
-  )
+  return <GameClient defaultGame={game} />
 }
