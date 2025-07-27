@@ -1,14 +1,7 @@
 import { GameId } from '@/kernel/ids'
-import { gameRepository } from '../repositories/game'
 import { left, right } from '@/shared/lib/either'
-import {
-  doStep,
-  getGameCurrentSymbol,
-  getGameNextSymbol,
-  getPlayerSymbol,
-  PlayerEntity,
-} from '../domain'
-import { symbol } from 'zod'
+import { doStep, PlayerEntity } from '../domain'
+import { gameRepository } from '../repositories/game'
 
 export async function stepGame(gameId: GameId, player: PlayerEntity, index: number) {
   const game = await gameRepository.getGame({ id: gameId })
@@ -31,9 +24,5 @@ export async function stepGame(gameId: GameId, player: PlayerEntity, index: numb
     return stepResult
   }
 
-  return right(
-    await gameRepository.saveGame({
-      ...\
-    }),
-  )
+  return right(await gameRepository.saveGame(stepResult.value))
 }
